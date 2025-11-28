@@ -20,7 +20,8 @@ export default async function Home() {
 		await Promise.all([
 			supabase
 				.from("tools")
-				.select("id, name, description, category, logo_url, website_url")
+				.select("id, name, description, category, logo_url, website_url, affiliate_url, is_featured")
+				.order("is_featured", { ascending: false })
 				.order("name", { ascending: true }),
 			supabase.from("categories").select("slug, name").order("name", { ascending: true }),
 		]);

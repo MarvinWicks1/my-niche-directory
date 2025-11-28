@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }: PageProps) {
 		supabase.from("categories").select("name, slug").eq("slug", params.slug).maybeSingle(),
 		supabase
 			.from("tools")
-			.select("id, name, description, category, logo_url, website_url")
+			.select("id, name, description, category, logo_url, website_url, affiliate_url, is_featured")
 			.eq("category", params.slug)
 			.order("name", { ascending: true }),
 	]);
@@ -113,11 +113,13 @@ export default async function CategoryPage({ params }: PageProps) {
 					{tools.map((t) => (
 						<ToolCard
 							key={t.id}
-							href={t.website_url ?? "#"}
 							name={t.name}
 							description={t.description ?? ""}
 							category={category.name}
 							logoUrl={t.logo_url ?? undefined}
+							websiteUrl={t.website_url ?? undefined}
+							affiliateUrl={t.affiliate_url ?? undefined}
+							isFeatured={Boolean(t.is_featured)}
 						/>
 					))}
 				</div>

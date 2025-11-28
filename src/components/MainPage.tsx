@@ -10,6 +10,8 @@ export type Tool = {
 	category: string;
 	logo_url: string | null;
 	website_url: string | null;
+	affiliate_url: string | null;
+	is_featured: boolean | null;
 };
 
 export type Category = {
@@ -112,11 +114,13 @@ export default function MainPage({
 							{filtered.map((t) => (
 								<ToolCard
 									key={t.id}
-									href={t.website_url ?? "#"}
 									name={t.name}
 									description={t.description ?? ""}
 									category={categoryLabelBySlug[t.category] ?? t.category}
 									logoUrl={t.logo_url ?? undefined}
+									websiteUrl={t.website_url ?? undefined}
+									affiliateUrl={t.affiliate_url ?? undefined}
+									isFeatured={Boolean(t.is_featured)}
 								/>
 							))}
 						</div>

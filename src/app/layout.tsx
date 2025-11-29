@@ -3,7 +3,18 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+// Derive a safe absolute site URL for metadataBase:
+// - Prefer NEXT_PUBLIC_SITE_URL when it's a non-empty absolute URL
+// - Fall back to VERCEL_URL when available (prepend https://)
+// - Finally fall back to localhost
+const envSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").trim();
+const vercelUrl = (process.env.VERCEL_URL || "").trim();
+const siteUrl =
+  envSiteUrl && /^https?:\/\//i.test(envSiteUrl)
+    ? envSiteUrl
+    : vercelUrl
+    ? `https://${vercelUrl}`
+    : "http://localhost:3000";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

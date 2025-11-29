@@ -1,7 +1,14 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+	const envSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").trim();
+	const vercelUrl = (process.env.VERCEL_URL || "").trim();
+	const siteUrl =
+		envSiteUrl && /^https?:\/\//i.test(envSiteUrl)
+			? envSiteUrl
+			: vercelUrl
+			? `https://${vercelUrl}`
+			: "http://localhost:3000";
 	return {
 		rules: {
 			userAgent: "*",

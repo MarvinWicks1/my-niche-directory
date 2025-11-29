@@ -2,7 +2,14 @@ import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+	const envSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").trim();
+	const vercelUrl = (process.env.VERCEL_URL || "").trim();
+	const siteUrl =
+		envSiteUrl && /^https?:\/\//i.test(envSiteUrl)
+			? envSiteUrl
+			: vercelUrl
+			? `https://${vercelUrl}`
+			: "http://localhost:3000";
 	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 	const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
